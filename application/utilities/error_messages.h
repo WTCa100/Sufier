@@ -3,11 +3,17 @@
 
 #include <stdio.h>
 
-#define ERR_MSG(_MSG_,  _FAIL_REASON_) \
+#include "logger.h"
+
+/**
+ * @brief Displays error message in standarized LOG format
+ * @param _MSG_ Error message
+ * @param _FAIL_REASON_ Cause of error
+ * @return void
+ */
+#define ERR_MSG(_MSG_, _FAIL_REASON_) \
 { \
-    printf("%s", _MSG_);\
-    printf(" ");\
-    printf("%s\n", _FAIL_REASON_); \
+    LOG("%s%s", _MSG_, _FAIL_REASON_); \
 }
 
 // Errors
