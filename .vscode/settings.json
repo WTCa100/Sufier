@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "contact.h": "c",
+        "list.h": "c",
+        "logger.h": "c"
+    }
+}
