@@ -15,7 +15,7 @@
     struct tm* localTime = localtime(&current_time); \
     char timestamp[20]; \
     strftime(timestamp, sizeof(timestamp), "%Y:%m:%d-%H:%M:%S", localTime);\
-    printf("%s: ", timestamp);\
+    printf("%s: %s:%d - ", timestamp, __FILE__, __LINE__);\
     printf(__VA_ARGS__); \
     printf("\n"); \
 }
