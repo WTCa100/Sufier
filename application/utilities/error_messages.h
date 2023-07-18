@@ -17,6 +17,16 @@
     LOG("%s %s", _MSG_, _FAIL_REASON_); \
 }
 
+/**
+ * @brief Displays error in format: _MSG_ - "Provided input exceedes the limit " _MAX_LENGHT_. 
+ * @param _MSG_ Error message (where did the error occured)
+ * @param _MAX_LENGHT_ Maximum lenght of specified variable such as name, phone, email etc.
+ */
+#define ERR_MSG_BAD_LENGHT(_MSG_, _MAX_LENGHT_) \
+{ \
+    LOG("%s %s %d", _MSG_, "Provided input exceedes the limit ", _MAX_LENGHT_); \
+}
+
 //========//
 // Errors //
 //========//
@@ -33,12 +43,17 @@
 // Contact
 #define ERR_CONTACT_COULD_NOT_DISPLAY_DATA "Error. Could not display contact."
 #define ERR_CONTACT_COULD_NOT_BE_COMPARED "Error. Could not compare contacts."
+// Input
+#define ERR_INPUT_INVALID_NAME "Error. Provided name is invalid."
+#define ERR_INPUT_INVALID_PHONE_NUMBER "Error. Provided Phone Number is invalid."
+#define ERR_INPUT_INVALID_EMAIL_ADDRESS "Error. Provided Email Address is invalid."
 
 //=========//
 // Reasons //
 //=========//
 // Common
 #define ERR_REASON_MEM_ALLOC_FAIL "Memory allocation failed."
+#define ERR_REASON_STR_EMPTY "Provided string is empty."
 // Hash & Hash related errors
 #define ERR_REASON_HASH_INVALID_KEY "Hash key is invalid."
 #define ERR_REASON_HASH_TABLE_FULL "Hash table is full."
