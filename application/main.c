@@ -15,6 +15,8 @@ Node_t* hash_table[MAX_HASH_TABLE_ENTRIES] = {NULL};
 uint16_t hash_calculate_key(Contact_t* entry);
 bool hash_add_contact(Contact_t* contact_add);
 bool hash_delete_contact(Contact_t* contact_delete);
+void hash_display_contact(Contact_t* contact_display);
+void hash_parse_linked_list(void);
 void hash_destroy(void);
 
 int main(int argc, char const *argv[])
@@ -33,7 +35,7 @@ uint16_t hash_calculate_key(Contact_t* entry)
         return MAX_HASH_TABLE_ENTRIES + 1;
     }
 
-    LOG("Creating hash key for entry:");
+    LOG("Calculating hash key for entry:");
     contact_t_display_format(entry);
 
     uint16_t key = 0;
@@ -99,7 +101,7 @@ bool hash_add_contact(Contact_t* contact_add)
         ++tmp_key;
 
         // Assign zero if upper boundry is reached
-        if(tmp_key > MAX_HASH_TABLE_ENTRIES)
+        if(tmp_key == MAX_HASH_TABLE_ENTRIES)
         {
             tmp_key = 0;
         }
@@ -118,7 +120,111 @@ bool hash_add_contact(Contact_t* contact_add)
 
 bool hash_delete_contact(Contact_t* contact_delete)
 {
+    if(contact_delete == NULL)
+    {
+        ERR_MSG(ERR_HASH_COULD_NOT_DELETE_CONTACT, ERR_REASON_CONTACT_NULL);
+        return 0;
+    }
+
+    // Generate key
+    uint16_t hash_key = hash_calculate_key(contact_delete);
+
+    // tmp variables
+    uint16_t tmp_key = hash_key;
+    bool was_full_loop = false;
+
+    // Find contact to delete (similar to adding function)
+    while(!was_full_loop)
+    {
+        LOG("Checking key: %d", hash_key);
+        // Check hashed head
+        if(node_t_delete_contact(contact_delete, &hash_table[tmp_key]))
+        {
+            LOG("Deleted entry from hash table!");
+            return 1;
+        }
+
+        // If linked list was full search for next valid linked list
+        ++tmp_key;
+
+        // Assign zero if upper boundry is reached
+        if(tmp_key == MAX_HASH_TABLE_ENTRIES)
+        {
+            tmp_key = 0;
+        }
+
+        // Break if full loop
+        if(tmp_key == hash_key)
+        {
+            was_full_loop = true;
+        }
+    }
+
     return 1;
+}
+
+/// @brief Displays specified contact after finding it in hash_table
+/// @param contact_display 
+void hash_display_contact(Contact_t* contact_display)
+{
+    uint16_t hash_key = hash_calculate_key(contact_display);
+
+    if(hash_key > MAX_HASH_TABLE_ENTRIES)
+    {
+        ERR_MSG(ERR_HASH_COULD_NOT_FIND_CONTACT, ERR_REASON_HASH_INVALID_KEY);
+        return;
+    }
+
+    uint16_t tmp_key = hash_key;
+    bool was_full_loop = false;
+    // Search for contact in the entire linked list
+    Node_t* contact_find;
+    while(!was_full_loop)
+    {
+        LOG("Checking key: %d", tmp_key);
+        // Check hashed head
+        contact_find = node_t_find_contact(contact_display, hash_table[tmp_key]);
+        if(contact_find != NULL)
+        {
+            LOG("Displaying contact found at hash val %d", tmp_key);
+            contact_t_show(&contact_find->data);
+            return;
+        }
+
+        // If linked list was full search for next valid linked list
+        ++tmp_key;
+
+        // Assign zero if upper boundry is reached
+        if(tmp_key == MAX_HASH_TABLE_ENTRIES)
+        {
+            tmp_key = 0;
+        }
+
+        // Break if full loop
+        if(tmp_key == hash_key)
+        {
+            was_full_loop = true;
+        }
+    }
+
+    ERR_MSG(ERR_HASH_COULD_NOT_FIND_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
+    return;
+}
+
+/// @brief This function will parse throught hash_table heads and if head is not null it will parse linked list with this head
+/// @param  
+void hash_parse_linked_list(void)
+{
+    LOG("Parsing Linked List.");
+    for(int hash_id = 0; hash_id < MAX_HASH_TABLE_ENTRIES; hash_id++)
+    {
+        if(hash_table[hash_id] != NULL)
+        {
+            LOG("At key %d", hash_id);
+            node_t_parse_list(hash_table[hash_id]);
+        }
+    }
+    return;
 }
 
 /// @brief Function will deallocate memory for every linked list inside a hash table 
