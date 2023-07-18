@@ -100,7 +100,55 @@ bool node_t_push_back(Contact_t* contact_add, Node_t* head)
     return 0;
 }
 
-bool node_t_delete(Contact_t* contact_delete, Node_t** head)
+/// @brief This function will display provided entry at linked list with given head
+/// It will search for a specified entry until it reached end of linked list 
+/// @param contact_search contact to be displayed
+/// @param head target linked list
+/// @return NULL if contact_search is absent 
+Node_t* node_t_find_contact(Contact_t* contact_search, Node_t* head)
+{
+
+    if(head == NULL)
+    {
+        ERR_MSG(ERR_NODE_COULD_NOT_FIND_CONTACT, ERR_REASON_NODE_EMPTY);
+        return NULL;
+    }
+
+    if(contact_search == NULL)
+    {
+        ERR_MSG(ERR_NODE_COULD_NOT_FIND_CONTACT, ERR_REASON_CONTACT_NULL);
+        return NULL;
+    }
+
+    Node_t* tmp = head;
+    LOG("Will try to find contact in list with head at: %p", head);
+    LOG("Contact:");
+    contact_t_display_format(contact_search);
+
+    while (tmp != NULL)
+    {
+        LOG("Checking %p", tmp);
+        if(contact_t_compare(contact_search, &tmp->data))
+        {
+            LOG("Found contact at %p", tmp);
+            return tmp;
+        }
+        tmp = tmp->next;
+    }
+    
+
+    ERR_MSG(ERR_NODE_COULD_NOT_FIND_CONTACT, ERR_REASON_NODE_CONTACT_NOT_PRESENT);
+    return NULL;
+}
+
+/// @brief Function will try to delete specified contact in linked list with given head.
+/// Function will first check if head contains specified entry - delete it and create a new head.
+/// If it's not at head it will traverse the entire linked list until the contact will be deleted or
+/// if reached end of linked list.
+/// @param contact_delete entry to be deleted
+/// @param head linked list head pointer
+/// @return 1 is success 0 if fail
+bool node_t_delete_contact(Contact_t* contact_delete, Node_t** head)
 {
     LOG("Attempting to delete entry:");
     contact_t_display_format(contact_delete);
