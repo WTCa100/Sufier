@@ -12,6 +12,10 @@ Contact_t contact_t_make(char in_name[MAX_NAME_LENGHT], char in_phone_number[MAX
     strcpy(new_contact.name,          in_name);
     strcpy(new_contact.phone_number,  in_phone_number);
     strcpy(new_contact.email_address, in_email_address);
+
+    LOG("Created entry: ");
+    contact_t_display_format(&new_contact);
+    
     return new_contact;
 }
 
