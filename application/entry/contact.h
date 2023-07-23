@@ -24,5 +24,6 @@ Contact_t contact_t_make(char in_name[MAX_NAME_LENGHT], char in_phone_number[MAX
 void contact_t_show(Contact_t* this);
 void contact_t_display_format(Contact_t* this);
 bool contact_t_compare(Contact_t* this, Contact_t* com);
+bool contact_t_check_atr(char check_name[MAX_NAME_LENGHT], char check_phone_number[MAX_PHONE_LENGHT], char check_email_address[MAX_EMAIL_LENGHT]);
 
 #endif // APP_ENTRIES_CONTACT_H
