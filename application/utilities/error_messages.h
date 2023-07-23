@@ -30,6 +30,8 @@
 //========//
 // Errors //
 //========//
+// Common / Misc
+#define ERR_COMMON_PLAIN "Error ocured."
 // Hash & Hash related errors
 #define ERR_HASH_COULD_NOT_GENERATE_HASH_KEY "Error. Could not generate hash key."
 #define ERR_HASH_COULD_NOT_ADD_CONTACT "Error. Could not add contact."
@@ -47,6 +49,7 @@
 #define ERR_INPUT_INVALID_NAME "Error. Provided name is invalid."
 #define ERR_INPUT_INVALID_PHONE_NUMBER "Error. Provided Phone Number is invalid."
 #define ERR_INPUT_INVALID_EMAIL_ADDRESS "Error. Provided Email Address is invalid."
+#define ERR_INPUT_COULD_NOT_CREATE_CONNTACT "Error. Could not create contact."
 
 //=========//
 // Reasons //
@@ -54,6 +57,7 @@
 // Common
 #define ERR_REASON_MEM_ALLOC_FAIL "Memory allocation failed."
 #define ERR_REASON_STR_EMPTY "Provided string is empty."
+#define ERR_REASON_BAD_CONTACT_ARGUMENT "One or more parameters are invalid."
 // Hash & Hash related errors
 #define ERR_REASON_HASH_INVALID_KEY "Hash key is invalid."
 #define ERR_REASON_HASH_TABLE_FULL "Hash table is full."
@@ -65,5 +69,6 @@
 #define ERR_REASON_NODE_HEAD_NULL "Node head is NULL."
 // Contact
 #define ERR_REASON_CONTACT_NULL "Contact cannot be NULL."
+
 
 #endif // APP_UTILITIES_ERROR_MESSAGES
