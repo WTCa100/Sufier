@@ -9,7 +9,7 @@
 
 // Get input
 
-extern Contact_t input_get_contact_info(void);
+extern bool input_get_contact_info(Contact_t* contact_new);
 
 // Validate input
 

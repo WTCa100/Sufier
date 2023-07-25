@@ -7,13 +7,13 @@
 #include "../logger.h"
 #include "../error_messages.h"
 
-Contact_t input_get_contact_info(void)
+bool input_get_contact_info(Contact_t* contact_new)
 {
 
     char buffer[MAX_INPUT_LENGHT];
-    char tmp_name[MAX_NAME_LENGHT];
-    char tmp_phone[MAX_PHONE_LENGHT];
-    char tmp_mail[MAX_EMAIL_LENGHT];
+    char tmp_name[MAX_NAME_LENGHT]   = "";
+    char tmp_phone[MAX_PHONE_LENGHT] = "";
+    char tmp_mail[MAX_EMAIL_LENGHT]  = "";
 
     LOG("Getting contact info from user.");
     printf("To add new contact please specify: \n");
@@ -58,7 +58,16 @@ Contact_t input_get_contact_info(void)
     // Clean buffer
     memset(buffer, 0, sizeof(buffer));
 
-    return contact_t_make(tmp_name, tmp_phone, tmp_mail);
+    if(strlen(tmp_name) > 0 && strlen(tmp_phone) > 0 && strlen(tmp_mail) > 0)
+    {
+        *contact_new = contact_t_make(tmp_name, tmp_phone, tmp_mail);
+        return true;
+
+    }
+
+    ERR_MSG(ERR_INPUT_COULD_NOT_CREATE_CONNTACT, ERR_REASON_BAD_CONTACT_ARGUMENT);
+    return false;
+
 }
 
 /// @brief Checks if input is longer than the max ammount of characters
