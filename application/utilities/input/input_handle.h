@@ -3,7 +3,12 @@
 
 #include <stdbool.h>
 
+// Input
 #define MAX_INPUT_LENGHT 500
+
+// TLDs
+#define MAX_TLD_LENGHT 50
+#define TLDS_PATH "utilities/input/TLDs.txt"
 
 #include "../../entry/contact.h"
 
@@ -20,5 +25,7 @@ extern bool input_is_email_valid(char* input_email);
 // Utilities
 
 extern void input_remove_double_spaces(char* input);
+extern bool input_check_email_TLD(char* input);
+extern void input_str_to_lower(char* input);
 
 #endif //APP_UTILITIES_INPUT_INPUT_HANDLE_H
