@@ -6,10 +6,10 @@
 #define MAX_NAME_LENGHT 64                                                                                                                                                                                                                                                                                         
 #define MAX_PHONE_LENGHT 15                                                                                                                                                                                                                                                                                             
 #define MAX_EMAIL_LENGHT 320
-
+// As suggested in RFC:
 //+------------------------+---+--------------------------+
 //|                        |   |                          |
-//| 64 Octests (loal part) | @ | 255 Octest (domain part) |
+//| 64 Octets (loal part)  | @ | 255 Octets (domain part) |
 //|                        |   |                          |
 //+------------------------+---+--------------------------+
 
