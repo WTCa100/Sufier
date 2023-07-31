@@ -32,6 +32,7 @@
 //========//
 // Common / Misc
 #define ERR_COMMON_PLAIN "Error ocured."
+#define ERR_COMMON_COULD_NOT_LOAD_FILE "Error. Could not load file."
 // Hash & Hash related errors
 #define ERR_HASH_COULD_NOT_GENERATE_HASH_KEY "Error. Could not generate hash key."
 #define ERR_HASH_COULD_NOT_ADD_CONTACT "Error. Could not add contact."
@@ -58,6 +59,7 @@
 #define ERR_REASON_MEM_ALLOC_FAIL "Memory allocation failed."
 #define ERR_REASON_STR_EMPTY "Provided string is empty."
 #define ERR_REASON_BAD_CONTACT_ARGUMENT "One or more parameters are invalid."
+#define ERR_REASON_FILE_MISSING "Provided file is missing."
 // Hash & Hash related errors
 #define ERR_REASON_HASH_INVALID_KEY "Hash key is invalid."
 #define ERR_REASON_HASH_TABLE_FULL "Hash table is full."
@@ -69,6 +71,12 @@
 #define ERR_REASON_NODE_HEAD_NULL "Node head is NULL."
 // Contact
 #define ERR_REASON_CONTACT_NULL "Contact cannot be NULL."
-
+// Input
+#define ERR_REASON_INPUT_PHONE_INVALID_LENGHT "Phone number must contain at least 9 digits."
+#define ERR_REASON_INPUT_PHONE_ONLY_DIGIT "Phone number must consists of numbers only."
+#define ERR_REASON_INPUT_EMAIL_NO_AT "Email address must contain one '@' symbol."
+#define ERR_REASON_INPUT_EMAIL_DOUBLE_DOT "Email address must not contain two consecutive dots \"..\"."
+#define ERR_REASON_INPUT_EMAIL_NO_TLD_SEP "Email address must have a \".\" separating it's TLD."
+#define ERR_REASON_INPUT_EMAIL_NO_TLD "Email address must have a valid TLD tag at the end."
 
 #endif // APP_UTILITIES_ERROR_MESSAGES
