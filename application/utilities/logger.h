@@ -6,23 +6,31 @@
 #include <string.h>
 
 extern FILE* log_file;
+extern char file_name[45];
 
-#define LOG_FILE_OPEN() \
+#define LOG_FILE_CREATE() \
 { \
     time_t current_time = time(NULL); \
     struct tm* localTime = localtime(&current_time); \
-    char* path = "./logs/"; \
     char timestamp[20]; \
-    char file_name[45]; \
     strftime(timestamp, sizeof(timestamp), "%Y%m%d-%H%M%S", localTime);\
-    strcpy(file_name, path); \
     strcat(file_name, timestamp); \
     strcat(file_name, ".log.gz"); \
-    LOG("Created log file: %s", file_name); \
-    log_file = fopen(file_name, "w");\
+    log_file = fopen(file_name, "a");\
     if(log_file == NULL) \
     { \
-        printf("Could not create a log file. Will display logs during runtime."); \
+        printf("Could not create a log file. Will display logs during runtime.\n"); \
+    } \
+    printf("Created log file %s\n", file_name); \
+    fclose(log_file); \
+}
+
+#define LOG_FILE_OPEN() \
+{\
+    log_file = fopen(file_name, "a");\
+    if(log_file == NULL) \
+    { \
+        printf("Could not create a log file. Will display logs during runtime.\n"); \
     } \
 }
 
@@ -32,6 +40,11 @@ extern FILE* log_file;
     { \
         fclose(log_file);\
     }; \
+}
+
+#define LOG_FILE_PROGRAM_END()\
+{ \
+    LOG("Exit Sufier.");\
 }
 
 /**
@@ -45,6 +58,7 @@ extern FILE* log_file;
     struct tm* localTime = localtime(&current_time); \
     char timestamp[20]; \
     strftime(timestamp, sizeof(timestamp), "%Y:%m:%d-%H:%M:%S", localTime);\
+    LOG_FILE_OPEN(); \
     if(log_file == NULL) \
     { \
         printf("%s: %s:%d - ", timestamp, __FILE__, __LINE__);\
@@ -57,6 +71,7 @@ extern FILE* log_file;
         fprintf(log_file, __VA_ARGS__); \
         fprintf(log_file, "\n"); \
     } \
+    LOG_FILE_CLOSE(); \
 }
 
 #endif // APP_UTILITIES_LOGGER_H
