@@ -5,13 +5,15 @@ INCLUDES = -I./entry, -I./utilities
 # Source files
 SRCS = ./main.c \
 	   ./entry/list.c \
-	   ./utilities/input/input_handle.c 
-#	   ./entry/contact.c
+	   ./utilities/input/input_handle.c \
+	   ./utilities/gui/menu.c \
+	   ./utilities/logger.c
 HDRS = ./entry/list.h \
 	   ./entry/contact.h \
 	   ./utilities/error_messages.h \
 	   ./utilities/logger.h \
-	   ./utilities/input/input_handle.h 
+	   ./utilities/input/input_handle.h \
+	   ./utilities/gui/menu.h
 
 # Object files
 OBJS = $(SRCS:.c=.o)
