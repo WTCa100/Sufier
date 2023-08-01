@@ -5,7 +5,9 @@
 
 #include "entry/contact.c"
 #include "entry/list.h"
-#include "./utilities/logger.h"
+#include "utilities/logger.h"
+#include "utilities/input/input_handle.h"
+#include "utilities/ui/menu.h"
 
 // later on change to 256
 #define MAX_HASH_TABLE_ENTRIES 10
@@ -21,6 +23,35 @@ void hash_destroy(void);
 
 int main(int argc, char const *argv[])
 {
+    LOG_FILE_CREATE();
+    int user_option = 0;
+    do
+    {
+        do
+        {
+            user_option = gui_menu_display();
+        } while (!gui_menu_verify_input(user_option));
+        printf("User option: %d\n", user_option);
+
+        switch (user_option)
+        {
+        case option_add:
+            LOG("User Selection \"add\"");
+            break;
+        case option_display:
+            LOG("User Selection \"display\"");
+            break;
+        case option_exit:
+            LOG("User Selection \"exit\"");
+            break;
+        default:
+            LOG("User Selection uknown");
+            break;
+        }
+
+    }   while(user_option != option_exit);
+
+    LOG_FILE_PROGRAM_END();
     return 0;
 }
 
