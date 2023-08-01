@@ -7,6 +7,11 @@
 #include "../logger.h"
 #include "../error_messages.h"
 
+/// @brief Constructs a Contact_t instance, and puts it into a pointer passed by the user. It will prompt for name, phone an e-mail address.
+/// In addition, it will modify input provided by the user (i.e. Delete whitespaces, turn e-mail into a lower case version). Additionally, it will 
+/// verify every attribute passed in a attribute oriented function. 
+/// @param contact_new refference to an existing instance 
+/// @return 1 if contact_t was constructed 0 if not
 bool input_get_contact_info(Contact_t* contact_new)
 {
 
@@ -216,6 +221,10 @@ void input_remove_double_spaces(char* input)
     return;
 }
 
+/// @brief Checks if input has a valid TLD (Top-Level Domain) that is covered in TLDs.txt file. 
+/// It will check only a slice of input, that is the first occurence of "." symbol after "@" symbol, and it will compare it to a lower case version of buffer entry.
+/// @param input provided email
+/// @return 1 - if input has TLD that is inside TLDs.txt 0 - if error occurs or no such extension in TLDs.txt.
 extern bool input_check_email_TLD(char* input)
 {
     FILE* Tld_list = fopen(TLDS_PATH, "r");
@@ -266,6 +275,10 @@ extern bool input_check_email_TLD(char* input)
     }
 }
 
+/**
+ * @brief Turns provided string into a lower case version
+ * @param input string to change
+ */
 void input_str_to_lower(char* input)
 {
     for(int i = 0; i < strlen(input); ++i)
