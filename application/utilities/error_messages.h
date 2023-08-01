@@ -7,14 +7,24 @@
 #include "logger.h"
 
 /**
- * @brief Displays simple error messages in standarized LOG format
+ * @brief Displays simple error messages in standarized LOG format. This inputs the message into stdout and a file stream
  * @param _MSG_ Error message
  * @param _FAIL_REASON_ Cause of error
- * @return void
  */
 #define ERR_MSG(_MSG_, _FAIL_REASON_) \
 { \
     LOG("%s %s", _MSG_, _FAIL_REASON_); \
+    ERR_MSG_DISPLAY(_MSG_, _FAIL_REASON_); \
+}
+
+/**
+ * @brief Displays the error message in standrized format same as LOG but only in the terminal.
+ * @param _MSG_ Error message
+ * @param _FAIL_REASON_ Cause of error
+ */
+#define ERR_MSG_DISPLAY(_MSG_, _FAIL_REASON_) \
+{ \
+    printf("%s %s\n", _MSG_, _FAIL_REASON_); \
 }
 
 /**
@@ -51,6 +61,8 @@
 #define ERR_INPUT_INVALID_PHONE_NUMBER "Error. Provided Phone Number is invalid."
 #define ERR_INPUT_INVALID_EMAIL_ADDRESS "Error. Provided Email Address is invalid."
 #define ERR_INPUT_COULD_NOT_CREATE_CONNTACT "Error. Could not create contact."
+// Menu/Gui
+#define ERR_MENU_INVALID_OPTION "Error. Cannot complete request."
 
 //=========//
 // Reasons //
@@ -78,5 +90,7 @@
 #define ERR_REASON_INPUT_EMAIL_DOUBLE_DOT "Email address must not contain two consecutive dots \"..\"."
 #define ERR_REASON_INPUT_EMAIL_NO_TLD_SEP "Email address must have a \".\" separating it's TLD."
 #define ERR_REASON_INPUT_EMAIL_NO_TLD "Email address must have a valid TLD tag at the end."
+// Menu/Gui
+#define ERR_REASON_MENU_INVALID_OPTION "There is no such option."
 
 #endif // APP_UTILITIES_ERROR_MESSAGES
