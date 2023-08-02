@@ -268,13 +268,21 @@ void hash_display_contact(Contact_t* contact_display)
 void hash_parse_linked_list(void)
 {
     LOG("Parsing Linked List.");
+    printf("Parsing hash table.\n");
     for(int hash_id = 0; hash_id < MAX_HASH_TABLE_ENTRIES; hash_id++)
     {
+        printf("Start of linked list\n");
         if(hash_table[hash_id] != NULL)
         {
             LOG("At key %d", hash_id);
             node_t_parse_list(hash_table[hash_id]);
         }
+        else
+        {
+            LOG("At key %d - empty", hash_id);
+            printf("-=Empty=-\n");
+        }
+        printf("End of linked list\n");
     }
     return;
 }

@@ -1,4 +1,4 @@
-# Version 2023073100, Last Updated Mon Jul 31 07:07:01 2023 UTC // https://data.iana.org/TLD/tlds-alpha-by-domain.txt
+# Version 2023073100, Last Updated Mon Jul 31 07:07:01 2023 UTC // source: https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 .AAA
 .AARP
 .ABB

@@ -3,6 +3,7 @@
         "*.ejs": "html",
         "contact.h": "c",
         "list.h": "c",
-        "logger.h": "c"
+        "logger.h": "c",
+        "stdio.h": "c"
     }
 }
