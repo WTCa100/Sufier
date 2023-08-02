@@ -29,17 +29,23 @@ int main(int argc, char const *argv[])
     {
         do
         {
-            user_option = gui_menu_display();
-        } while (!gui_menu_verify_input(user_option));
+            user_option = ui_menu_display();
+        } while (!ui_menu_verify_input(user_option));
         printf("User option: %d\n", user_option);
 
         switch (user_option)
         {
         case option_add:
             LOG("User Selection \"add\"");
+            Contact_t new_contact;
+            input_get_contact_info(&new_contact);
+            hash_add_contact(&new_contact);
             break;
         case option_display:
             LOG("User Selection \"display\"");
+            Contact_t testing = contact_t_make("Test", "888486738", "test@test.com");
+            hash_display_contact(&testing);
+            hash_parse_linked_list();
             break;
         case option_exit:
             LOG("User Selection \"exit\"");
@@ -55,7 +61,7 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-/// @brief Calculate hash key with the following rules: (1st name character + sum of every phone number) % MAX_HASH_TABLE_ENTRIES
+/// @brief Calculate hash key with the following rules: First letter of entry's name + every digit of phone number + size of TLD % MAX_HASH_TABLE_ENTRIES
 /// @param entry base to generate key
 /// @return key (0 - MAX_HASH_TABLE_ENTRIES) if success. MAX_HASH_TABLE_ENTRIES + 1 if fail
 uint16_t hash_calculate_key(Contact_t* entry)
@@ -66,15 +72,22 @@ uint16_t hash_calculate_key(Contact_t* entry)
         return MAX_HASH_TABLE_ENTRIES + 1;
     }
 
-    LOG("Calculating hash key for entry:");
-    contact_t_display_format(entry);
+    LOG("Calculating hash key for entry Name: %s Phone: %s Email: %s", entry->name, entry->phone_number, entry->email_address);
 
-    uint16_t key = 0;
-    key += (uint16_t)entry->name[0];
-
-    for(int num = 0; num < strlen(entry->phone_number); num++)
+    uint16_t key = entry->name[0] % 26;
+    for(int digit = 0; digit < strlen(entry->phone_number); ++digit)
     {
-        key += entry->phone_number[num] - 48;
+        if(!(entry->phone_number[digit] == ' '))
+        {
+            key += (uint16_t)(entry->phone_number[digit] - '0');
+        }
+    }
+
+    char* tmp_tld;  
+    tmp_tld = strrchr(entry->email_address, '.');
+    for(int TLD_char = 0; TLD_char < strlen(tmp_tld); ++TLD_char)
+    {
+        key += (uint16_t)tmp_tld[TLD_char];
     }
 
     LOG("Key created %d.", key % MAX_HASH_TABLE_ENTRIES);
@@ -82,6 +95,8 @@ uint16_t hash_calculate_key(Contact_t* entry)
 }
 
 /// @brief This function will attempt to add contact at head of a hash_table at generated hash_key location.
+/// After validating if provided Contact_t is a valid instance, function will also search if the entry is a duplicate.
+/// Key created by using solely entry's name thus no 2 entries with the same name as it would lead to very big mess.
 /// If no place was found at hash table head then it will push back the linked list if possible.
 /// If not it will search for the next avilable spot to insert contact.
 /// @param contact_add Contact to be inserted
@@ -92,6 +107,12 @@ bool hash_add_contact(Contact_t* contact_add)
     if(contact_add == NULL)
     {
         ERR_MSG(ERR_HASH_COULD_NOT_ADD_CONTACT, ERR_REASON_CONTACT_NULL);
+        return 0;
+    }
+
+    if(!contact_t_check_atr(contact_add->name, contact_add->phone_number, contact_add->email_address))
+    {
+        ERR_MSG(ERR_HASH_COULD_NOT_ADD_CONTACT, ERR_REASON_HASH_INVALID_CONTACT);
         return 0;
     }
 

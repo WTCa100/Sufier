@@ -7,7 +7,7 @@
 #include "../logger.h"
 #include "../error_messages.h"
 
-int gui_menu_display()
+int ui_menu_display()
 {
     char buffer[20];
     int choice = 0;
@@ -37,7 +37,7 @@ int gui_menu_display()
     }
 }
 
-extern bool gui_menu_verify_input(int input)
+extern bool ui_menu_verify_input(int input)
 {
     bool is_valid = (input == option_add || input == option_display || input == option_exit);
     if(is_valid)

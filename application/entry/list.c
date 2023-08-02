@@ -40,7 +40,7 @@ void node_t_parse_list(Node_t* head)
         tmp_pointer = tmp_pointer->next;
     }
     printf("--== NULL ==--\n");
-    LOG("Successfully parsed entire list (head at %p)\n", head);
+    LOG("Successfully parsed entire list (head at %p)", head);
     return;
 }
 
@@ -50,8 +50,7 @@ void node_t_parse_list(Node_t* head)
 /// @return 
 bool node_t_push_back(Contact_t* contact_add, Node_t* head)
 {
-    LOG("Attempting to add new contact");
-    contact_t_display_format(contact_add);
+    LOG("Attempting to add new contact: Name: %s Phone: %s Email: %s", contact_add->name, contact_add->phone_number, contact_add->email_address);
     // Check if head is empty
     if(contact_add == NULL)
     {
@@ -110,7 +109,7 @@ Node_t* node_t_find_contact(Contact_t* contact_search, Node_t* head)
 
     if(head == NULL)
     {
-        ERR_MSG(ERR_NODE_COULD_NOT_FIND_CONTACT, ERR_REASON_NODE_EMPTY);
+        LOG("%s %s",ERR_NODE_COULD_NOT_FIND_CONTACT, ERR_REASON_NODE_EMPTY);
         return NULL;
     }
 
@@ -122,8 +121,7 @@ Node_t* node_t_find_contact(Contact_t* contact_search, Node_t* head)
 
     Node_t* tmp = head;
     LOG("Will try to find contact in list with head at: %p", head);
-    LOG("Contact:");
-    contact_t_display_format(contact_search);
+    LOG("Contact: Name: %s Phone: %s Email: %s", contact_search->name, contact_search->phone_number, contact_search->email_address);
 
     while (tmp != NULL)
     {
@@ -150,8 +148,7 @@ Node_t* node_t_find_contact(Contact_t* contact_search, Node_t* head)
 /// @return 1 is success 0 if fail
 bool node_t_delete_contact(Contact_t* contact_delete, Node_t** head)
 {
-    LOG("Attempting to delete entry:");
-    contact_t_display_format(contact_delete);
+    LOG("Attempting to delete contact: Name: %s Phone: %s Email: %s", contact_delete->name, contact_delete->phone_number, contact_delete->email_address);
     // Check if contact is at head
     if(contact_t_compare(contact_delete, &(*head)->data))
     {

@@ -15,7 +15,7 @@ enum menu_options
     option_bad = -1
 };
 
-extern int gui_menu_display();
-extern bool gui_menu_verify_input(int input);
+extern int ui_menu_display();
+extern bool ui_menu_verify_input(int input);
 
 #endif // APP_UTILITIES_UI_MENU_H

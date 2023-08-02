@@ -31,8 +31,7 @@ Contact_t contact_t_make(char in_name[MAX_NAME_LENGHT], char in_phone_number[MAX
     strcpy(new_contact.phone_number,  in_phone_number);
     strcpy(new_contact.email_address, in_email_address);
 
-    LOG("Created entry: ");
-    contact_t_display_format(&new_contact);
+    LOG("Created entry: Name: %s Phone: %s Email: %s", new_contact.name, new_contact.phone_number, new_contact.email_address);
     
     return new_contact;
 }
@@ -81,10 +80,7 @@ bool contact_t_compare(Contact_t* this, Contact_t* com)
         return 0;
     }
 
-    LOG("Comparing: ");
-    contact_t_display_format(this);
-    printf("with: \n");
-    contact_t_display_format(com);
+    LOG("Comparing:\n %s - %s \n %s - %s \n %s - %s", this->name, com->name, this->phone_number, com->phone_number, this->email_address, com->phone_number);
 
     return (strcmp(this->name, com->name) == 0 &&
             strcmp(this->phone_number, com->phone_number) == 0 &&
@@ -99,7 +95,7 @@ bool contact_t_compare(Contact_t* this, Contact_t* com)
 bool contact_t_check_atr(char check_name[MAX_NAME_LENGHT], char check_phone_number[MAX_PHONE_LENGHT], char check_email_address[MAX_EMAIL_LENGHT])
 {
     LOG("Checking arguments name: %s phone: %s mail: %s", check_name, check_phone_number, check_email_address);    
-    if(strlen(check_name) == 0 && strlen(check_phone_number) == 0 && strlen(check_email_address) == 0)
+    if(strlen(check_name) == 0 || strlen(check_phone_number) == 0 || strlen(check_email_address) == 0)
     {
         LOG(ERR_REASON_BAD_CONTACT_ARGUMENT);
         return 0;
