@@ -37,18 +37,19 @@ int main(int argc, char const *argv[])
         {
         case option_add:
             LOG("User Selection \"add\"");
-            Contact_t new_contact;
-            input_get_contact_info(&new_contact);
-            hash_add_contact(&new_contact);
+            Contact_t tmp;
+            if(input_get_contact_info(&tmp))
+            {
+                hash_add_contact(&tmp);
+            }
             break;
         case option_display:
             LOG("User Selection \"display\"");
-            Contact_t testing = contact_t_make("Test", "888486738", "test@test.com");
-            hash_display_contact(&testing);
             hash_parse_linked_list();
             break;
         case option_exit:
             LOG("User Selection \"exit\"");
+            hash_destroy();
             break;
         default:
             LOG("User Selection uknown");
@@ -274,7 +275,7 @@ void hash_parse_linked_list(void)
         printf("Start of linked list\n");
         if(hash_table[hash_id] != NULL)
         {
-            LOG("At key %d", hash_id);
+            LOG("At key %d - val %p", hash_id, hash_table[hash_id]);
             node_t_parse_list(hash_table[hash_id]);
         }
         else

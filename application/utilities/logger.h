@@ -21,8 +21,12 @@ extern char file_name[45];
     { \
         printf("Could not create a log file. Will display logs during runtime.\n"); \
     } \
-    printf("Created log file %s\n", file_name); \
-    fclose(log_file); \
+    else \
+    { \
+        printf("Created log file %s\n", file_name); \
+        fclose(log_file); \
+      \
+    } \
 }
 
 #define LOG_FILE_OPEN() \

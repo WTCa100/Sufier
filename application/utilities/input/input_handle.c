@@ -68,7 +68,6 @@ bool input_get_contact_info(Contact_t* contact_new)
     {
         *contact_new = contact_t_make(tmp_name, tmp_phone, tmp_mail);
         return true;
-
     }
 
     ERR_MSG(ERR_INPUT_COULD_NOT_CREATE_CONNTACT, ERR_REASON_BAD_CONTACT_ARGUMENT);
