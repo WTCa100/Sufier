@@ -101,10 +101,10 @@ bool node_t_push_back(Contact_t* contact_add, Node_t* head)
 
 /// @brief This function will display provided entry at linked list with given head
 /// It will search for a specified entry until it reached end of linked list 
-/// @param contact_search contact to be displayed
+/// @param contact_search name of the contact to be found
 /// @param head target linked list
 /// @return NULL if contact_search is absent 
-Node_t* node_t_find_contact(Contact_t* contact_search, Node_t* head)
+Node_t* node_t_find_contact(char* contact_search, Node_t* head)
 {
 
     if(head == NULL)
@@ -121,12 +121,12 @@ Node_t* node_t_find_contact(Contact_t* contact_search, Node_t* head)
 
     Node_t* tmp = head;
     LOG("Will try to find contact in list with head at: %p", head);
-    LOG("Contact: Name: %s Phone: %s Email: %s", contact_search->name, contact_search->phone_number, contact_search->email_address);
+    LOG("Contact: Name: %s", contact_search);
 
     while (tmp != NULL)
     {
         LOG("Checking %p", tmp);
-        if(contact_t_compare(contact_search, &tmp->data))
+        if(strcmp(contact_search, tmp->data.name) == 0)
         {
             LOG("Found contact at %p", tmp);
             return tmp;
@@ -135,7 +135,7 @@ Node_t* node_t_find_contact(Contact_t* contact_search, Node_t* head)
     }
     
 
-    ERR_MSG(ERR_NODE_COULD_NOT_FIND_CONTACT, ERR_REASON_NODE_CONTACT_NOT_PRESENT);
+    LOG("%s%s", ERR_NODE_COULD_NOT_FIND_CONTACT, ERR_REASON_NODE_CONTACT_NOT_PRESENT);
     return NULL;
 }
 
@@ -146,11 +146,11 @@ Node_t* node_t_find_contact(Contact_t* contact_search, Node_t* head)
 /// @param contact_delete entry to be deleted
 /// @param head linked list head pointer
 /// @return 1 is success 0 if fail
-bool node_t_delete_contact(Contact_t* contact_delete, Node_t** head)
+bool node_t_delete_contact(char* contact_delete, Node_t** head)
 {
-    LOG("Attempting to delete contact: Name: %s Phone: %s Email: %s", contact_delete->name, contact_delete->phone_number, contact_delete->email_address);
+    LOG("Attempting to delete contact: Name: %s - LL Head at %p", contact_delete, *head);
     // Check if contact is at head
-    if(contact_t_compare(contact_delete, &(*head)->data))
+    if(strcmp(contact_delete, (*head)->data.name) == 0)
     {
         LOG("Found contact at head %p", *head);
         Node_t* new_head = (*head)->next;
@@ -169,7 +169,7 @@ bool node_t_delete_contact(Contact_t* contact_delete, Node_t** head)
         while(tmp_pointer != NULL)
         {
             LOG("Checking %p", tmp_pointer);
-            if(contact_t_compare(&tmp_pointer->data, contact_delete))
+            if(strcmp(tmp_pointer->data.name, contact_delete) == 0)
             {
                 LOG("Deleting contact from %p", tmp_pointer);
                 tmp_prev_pointer->next = tmp_pointer->next;

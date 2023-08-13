@@ -14,10 +14,10 @@
 
 Node_t* hash_table[MAX_HASH_TABLE_ENTRIES] = {NULL};
 
-uint16_t hash_calculate_key(Contact_t* entry);
+uint16_t hash_calculate_key(char* entry);
 bool hash_add_contact(Contact_t* contact_add);
-bool hash_delete_contact(Contact_t* contact_delete);
-void hash_display_contact(Contact_t* contact_display);
+bool hash_delete_contact(char* contact_delete);
+void hash_display_contact(char* contact_display);
 void hash_parse_linked_list(void);
 void hash_destroy(void);
 
@@ -62,10 +62,10 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-/// @brief Calculate hash key with the following rules: First letter of entry's name + every digit of phone number + size of TLD % MAX_HASH_TABLE_ENTRIES
+/// @brief Calculate hash key with the following rules: Every digit of entry (contact_t -> name)
 /// @param entry base to generate key
 /// @return key (0 - MAX_HASH_TABLE_ENTRIES) if success. MAX_HASH_TABLE_ENTRIES + 1 if fail
-uint16_t hash_calculate_key(Contact_t* entry)
+uint16_t hash_calculate_key(char* entry)
 {
     if(entry == NULL)
     {
@@ -73,22 +73,15 @@ uint16_t hash_calculate_key(Contact_t* entry)
         return MAX_HASH_TABLE_ENTRIES + 1;
     }
 
-    LOG("Calculating hash key for entry Name: %s Phone: %s Email: %s", entry->name, entry->phone_number, entry->email_address);
+    LOG("Calculating hash key for entry Name: %s", entry);
 
-    uint16_t key = entry->name[0] % 26;
-    for(int digit = 0; digit < strlen(entry->phone_number); ++digit)
+    uint16_t key = 0;
+    for(int character = 0; character < strlen(entry); ++character)
     {
-        if(!(entry->phone_number[digit] == ' '))
+        if(!(entry[character] == ' '))
         {
-            key += (uint16_t)(entry->phone_number[digit] - '0');
+            key += (uint16_t)(entry[character] - 'a');
         }
-    }
-
-    char* tmp_tld;  
-    tmp_tld = strrchr(entry->email_address, '.');
-    for(int TLD_char = 0; TLD_char < strlen(tmp_tld); ++TLD_char)
-    {
-        key += (uint16_t)tmp_tld[TLD_char];
     }
 
     LOG("Key created %d.", key % MAX_HASH_TABLE_ENTRIES);
@@ -118,7 +111,7 @@ bool hash_add_contact(Contact_t* contact_add)
     }
 
     // Generate key
-    uint16_t hash_key = hash_calculate_key(contact_add);
+    uint16_t hash_key = hash_calculate_key(contact_add->name);
 
     // Check if key is valid
     if(hash_key > MAX_HASH_TABLE_ENTRIES)
@@ -129,6 +122,40 @@ bool hash_add_contact(Contact_t* contact_add)
 
     int tmp_key = hash_key;
     bool was_full_loop = false;
+
+    // Look for a duplicate
+    // It's very similar to the finding function
+    while(!was_full_loop)
+    {
+        LOG("Checking key: %d", tmp_key);
+        // Check hashed head
+        if(node_t_find_contact(contact_add->name, hash_table[tmp_key]) != NULL)
+        {
+            LOG("Contact with name %s already exists!", contact_add->name);
+            ERR_MSG(ERR_HASH_COULD_NOT_ADD_CONTACT, ERR_REASON_HASH_CONTACT_DUP);
+            return false;
+        }
+
+        // If linked list was full search for next valid linked list
+        ++tmp_key;
+
+        // Assign zero if upper boundry is reached
+        if(tmp_key == MAX_HASH_TABLE_ENTRIES)
+        {
+            tmp_key = 0;
+        }
+
+        // Break if full loop
+        if(tmp_key == hash_key)
+        {
+            was_full_loop = true;
+        }
+    }
+
+    // If we are here then no duplicate was found. Reset the values.
+    LOG("No duplicated contact with name %s was found. Proceeding.", contact_add->name);
+    tmp_key = hash_key;
+    was_full_loop = false;
 
     while(!was_full_loop)
     {
@@ -171,8 +198,10 @@ bool hash_add_contact(Contact_t* contact_add)
     return 0;
 }
 
-bool hash_delete_contact(Contact_t* contact_delete)
+
+bool hash_delete_contact(char* contact_delete)
 {
+    LOG("Attempting to delete %s", contact_delete);
     if(contact_delete == NULL)
     {
         ERR_MSG(ERR_HASH_COULD_NOT_DELETE_CONTACT, ERR_REASON_CONTACT_NULL);
@@ -189,7 +218,7 @@ bool hash_delete_contact(Contact_t* contact_delete)
     // Find contact to delete (similar to adding function)
     while(!was_full_loop)
     {
-        LOG("Checking key: %d", hash_key);
+        LOG("Checking key: %d", tmp_key);
         // Check hashed head
         if(node_t_delete_contact(contact_delete, &hash_table[tmp_key]))
         {
@@ -218,7 +247,7 @@ bool hash_delete_contact(Contact_t* contact_delete)
 
 /// @brief Displays specified contact after finding it in hash_table
 /// @param contact_display 
-void hash_display_contact(Contact_t* contact_display)
+void hash_display_contact(char* contact_display)
 {
     uint16_t hash_key = hash_calculate_key(contact_display);
 

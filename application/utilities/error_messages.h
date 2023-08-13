@@ -77,6 +77,7 @@
 #define ERR_REASON_HASH_TABLE_FULL "Hash table is full."
 #define ERR_REASON_HASH_TABLE_CONTACT_ABSENT "No such contact in the hash table."
 #define ERR_REASON_HASH_INVALID_CONTACT "Contact seems to have an invalid attribute/attributes."
+#define ERR_REASON_HASH_CONTACT_DUP "Contact name duplicate conflict."
 // Node
 #define ERR_REASON_NODE_CONTACT_NOT_PRESENT "Given contact is not present in this linked list."
 #define ERR_REASON_NODE_EMPTY "Linked list is empty."
