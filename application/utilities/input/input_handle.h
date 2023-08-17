@@ -15,6 +15,7 @@
 // Get input
 
 extern bool input_get_contact_info(Contact_t* contact_new);
+extern bool input_get_contact_name(char s_name[MAX_NAME_LENGHT]);
 
 // Validate input
 

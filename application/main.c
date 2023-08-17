@@ -14,11 +14,11 @@
 
 Node_t* hash_table[MAX_HASH_TABLE_ENTRIES] = {NULL};
 
-uint16_t hash_calculate_key(char* entry);
-bool hash_add_contact(Contact_t* contact_add);
-bool hash_delete_contact(char* contact_delete);
-void hash_display_contact(char* contact_display);
-void hash_parse_linked_list(void);
+uint16_t hash_key_calculate(char* entry);
+bool hash_contact_add(Contact_t* contact_add);
+bool hash_contact_delete(char* contact_delete);
+void hash_contact_display(char* contact_display);
+void hash_list_parse_linked(void);
 void hash_destroy(void);
 
 int main(int argc, char const *argv[])
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
         {
             user_option = ui_menu_display();
         } while (!ui_menu_verify_input(user_option));
-        printf("User option: %d\n", user_option);
+        LOG("User option: %d\n", user_option);
 
         switch (user_option)
         {
@@ -40,15 +40,27 @@ int main(int argc, char const *argv[])
             Contact_t tmp;
             if(input_get_contact_info(&tmp))
             {
-                hash_add_contact(&tmp);
+                if(hash_contact_add(&tmp))
+                {
+                    printf("New contact has been added!\n");
+                }
             }
+
             break;
         case option_display:
             LOG("User Selection \"display\"");
-            hash_parse_linked_list();
+            char tmp_name[MAX_NAME_LENGHT];
+            if(input_get_contact_name(tmp_name))
+            {
+                hash_contact_display(tmp_name);
+            }
             break;
+        case option_show_all:
+            LOG("User Selection \"show all\"");
+            hash_list_parse_linked();
         case option_exit:
             LOG("User Selection \"exit\"");
+            printf("Exiting Sufier...\n");
             hash_destroy();
             break;
         default:
@@ -56,6 +68,12 @@ int main(int argc, char const *argv[])
             break;
         }
 
+        if(user_option != option_exit)
+        {
+            printf("Press any key to continue.\n");
+            getchar();
+            system("clear");
+        }
     }   while(user_option != option_exit);
 
     LOG_FILE_PROGRAM_END();
@@ -65,7 +83,7 @@ int main(int argc, char const *argv[])
 /// @brief Calculate hash key with the following rules: Every digit of entry (contact_t -> name)
 /// @param entry base to generate key
 /// @return key (0 - MAX_HASH_TABLE_ENTRIES) if success. MAX_HASH_TABLE_ENTRIES + 1 if fail
-uint16_t hash_calculate_key(char* entry)
+uint16_t hash_key_calculate(char* entry)
 {
     if(entry == NULL)
     {
@@ -95,7 +113,7 @@ uint16_t hash_calculate_key(char* entry)
 /// If not it will search for the next avilable spot to insert contact.
 /// @param contact_add Contact to be inserted
 /// @return 1 if success 0 if fail
-bool hash_add_contact(Contact_t* contact_add)
+bool hash_contact_add(Contact_t* contact_add)
 {
     // Check if contact is valid
     if(contact_add == NULL)
@@ -111,7 +129,7 @@ bool hash_add_contact(Contact_t* contact_add)
     }
 
     // Generate key
-    uint16_t hash_key = hash_calculate_key(contact_add->name);
+    uint16_t hash_key = hash_key_calculate(contact_add->name);
 
     // Check if key is valid
     if(hash_key > MAX_HASH_TABLE_ENTRIES)
@@ -199,7 +217,7 @@ bool hash_add_contact(Contact_t* contact_add)
 }
 
 
-bool hash_delete_contact(char* contact_delete)
+bool hash_contact_delete(char* contact_delete)
 {
     LOG("Attempting to delete %s", contact_delete);
     if(contact_delete == NULL)
@@ -209,7 +227,7 @@ bool hash_delete_contact(char* contact_delete)
     }
 
     // Generate key
-    uint16_t hash_key = hash_calculate_key(contact_delete);
+    uint16_t hash_key = hash_key_calculate(contact_delete);
 
     // tmp variables
     uint16_t tmp_key = hash_key;
@@ -247,9 +265,9 @@ bool hash_delete_contact(char* contact_delete)
 
 /// @brief Displays specified contact after finding it in hash_table
 /// @param contact_display 
-void hash_display_contact(char* contact_display)
+void hash_contact_display(char* contact_display)
 {
-    uint16_t hash_key = hash_calculate_key(contact_display);
+    uint16_t hash_key = hash_key_calculate(contact_display);
 
     if(hash_key > MAX_HASH_TABLE_ENTRIES)
     {
@@ -295,7 +313,7 @@ void hash_display_contact(char* contact_display)
 
 /// @brief This function will parse throught hash_table heads and if head is not null it will parse linked list with this head
 /// @param  
-void hash_parse_linked_list(void)
+void hash_list_parse_linked(void)
 {
     LOG("Parsing Linked List.");
     printf("Parsing hash table.\n");

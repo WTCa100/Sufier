@@ -11,7 +11,8 @@ enum menu_options
 {
     option_add = 1,
     option_display = 2,
-    option_exit = 3,
+    option_show_all = 3,
+    option_exit = 4,
     option_bad = -1
 };
 

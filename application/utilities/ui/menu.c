@@ -15,7 +15,8 @@ int ui_menu_display()
     printf("Sufier - your easy to access hash-table.\n");
     printf("1. Add contact.\n");
     printf("2. Display/Edit contacts.\n");
-    printf("3. Exit.\n");
+    printf("3. Show all contacts.\n");
+    printf("4. Exit.\n");
     printf("Choose one option: ");
     fgets(buffer, sizeof(buffer), stdin);
 
@@ -37,7 +38,7 @@ int ui_menu_display()
     }
 }
 
-extern bool ui_menu_verify_input(int input)
+bool ui_menu_verify_input(int input)
 {
     bool is_valid = (input == option_add || input == option_display || input == option_exit);
     if(is_valid)

@@ -285,3 +285,28 @@ void input_str_to_lower(char* input)
         input[i] = tolower(input[i]);
     }
 }
+
+bool input_get_contact_name(char s_name[MAX_NAME_LENGHT])
+{
+    LOG("User providing contact name.");
+    printf("Please provide contact's name:\n");
+    char buffer[MAX_NAME_LENGHT];
+    fgets(buffer, sizeof(buffer), stdin);
+    LOG("Got %s", buffer);
+    
+    // Remove tailing newline
+    buffer[strcspn(buffer, "\n")] = '\0';
+    
+    // Remove double spaces if present
+    input_remove_double_spaces(buffer);
+    if(input_is_name_valid(buffer))
+    {
+        LOG("Got a valid name %s", buffer);
+        sscanf(buffer, "%s\n", s_name);
+        return true;
+    }
+    
+    LOG("Got a invalid name %s", buffer);
+    return false;
+
+}
