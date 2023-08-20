@@ -16,7 +16,7 @@ Node_t* node_t_init(Contact_t* contact_init)
 
     if(new_node == NULL)
     {
-        ERR_MSG(ERR_NODE_COULD_NOT_CREATE_NODE, ERR_REASON_MEM_ALLOC_FAIL);
+        ERR_MSG(ERR_NODE_COULD_NOT_CREATE_NODE, ERR_REASON_COMMON_MEM_ALLOC_FAIL);
         return NULL;
     }
     new_node->data = *contact_init;

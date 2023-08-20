@@ -17,7 +17,9 @@ int ui_menu_display()
     printf("2. Display.\n");
     printf("3. Show all contacts.\n");
     printf("4. Edit contact.\n");
-    printf("5. Exit.\n");
+    printf("5. Delete Contact.\n");
+    printf("6. Erase hash_table. (Danger Zone)\n");
+    printf("7. Exit.\n");
     printf("Choose one option: ");
     fgets(buffer, sizeof(buffer), stdin);
 
@@ -34,7 +36,7 @@ int ui_menu_display()
     }
     else
     {
-        ERR_MSG(ERR_MENU_INVALID_OPTION, ERR_REASON_MENU_INVALID_OPTION);
+        ERR_MSG(ERR_MENU_INVALID_OPTION, ERR_REASON_COMMON_INVALID_OPTION);
         return option_bad;
     }
 }

@@ -13,7 +13,9 @@ enum menu_options
     option_display = 2,
     option_show_all = 3,
     option_edit = 4,
-    option_exit = 5,
+    option_delete = 5,
+    option_erase = 6,
+    option_exit = 7,
     option_bad = -1
 };
 

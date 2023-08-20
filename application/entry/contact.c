@@ -49,7 +49,7 @@ void contact_t_show(Contact_t* this)
 
     if(!contact_t_check_atr(this->name, this->phone_number, this->email_address))
     {
-        ERR_MSG(ERR_CONTACT_COULD_NOT_DISPLAY_DATA, ERR_REASON_BAD_CONTACT_ARGUMENT);
+        ERR_MSG(ERR_CONTACT_COULD_NOT_DISPLAY_DATA, ERR_REASON_COMMON_BAD_CONTACT_ARGUMENT);
         return;
     }
 
@@ -80,7 +80,7 @@ bool contact_t_compare(Contact_t* this, Contact_t* com)
         return 0;
     }
 
-    LOG("Comparing:\n%s - %s\n%s - %s\n%s - %s",\
+    LOG("Checking if values are the same:\n%s - %s\n%s - %s\n%s - %s",\
         this->name, com->name, this->phone_number, com->phone_number, this->email_address, com->email_address);
 
     return (strcmp(this->name, com->name) == 0 &&
@@ -98,7 +98,7 @@ bool contact_t_check_atr(char check_name[MAX_NAME_LENGHT], char check_phone_numb
     LOG("Checking arguments name: %s phone: %s mail: %s", check_name, check_phone_number, check_email_address);    
     if(strlen(check_name) == 0 || strlen(check_phone_number) == 0 || strlen(check_email_address) == 0)
     {
-        LOG(ERR_REASON_BAD_CONTACT_ARGUMENT);
+        LOG(ERR_REASON_COMMON_BAD_CONTACT_ARGUMENT);
         return 0;
     }
     else

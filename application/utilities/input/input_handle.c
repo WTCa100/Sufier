@@ -70,10 +70,40 @@ bool input_get_contact_info(Contact_t* contact_new)
         return true;
     }
 
-    ERR_MSG(ERR_INPUT_COULD_NOT_CREATE_CONNTACT, ERR_REASON_BAD_CONTACT_ARGUMENT);
+    ERR_MSG(ERR_INPUT_COULD_NOT_CREATE_CONNTACT, ERR_REASON_COMMON_BAD_CONTACT_ARGUMENT);
     return false;
 
 }
+
+ bool input_get_is_sure()
+ {
+    LOG("Checking if user is sure.");
+    char buffer[MAX_INPUT_LENGHT];
+    char input;
+    do
+    {
+        // Clear buffer
+        memset(buffer, 0, sizeof(buffer));
+        printf("Are you sure? This acction cannot be undone.");
+        fgets(buffer, sizeof(buffer), stdin);
+        
+        // Clean newlines
+        buffer[strcspn(buffer, "\n")] = '\0';
+
+        LOG("Got %s", buffer);
+        input = tolower(buffer[0]);
+        if(input != 'y' && input != 'n')
+        {
+            ERR_MSG(ERR_INPUT_UNABLE_TO_PROCEED, ERR_REASON_COMMON_INVALID_OPTION);
+        }
+    } while (input != 'y' && input != 'n');
+    LOG("%c was choosen", input);
+    if(input == 'y')
+    {
+        return true;
+    }
+    return false;
+ }
 
 /// @brief Checks if input is longer than the max ammount of characters
 /// @param input_name provided name
@@ -82,7 +112,7 @@ bool input_is_name_valid(char* input_name)
 {
     if(strlen(input_name) == 0)
     {
-        ERR_MSG(ERR_INPUT_INVALID_NAME, ERR_REASON_STR_EMPTY);
+        ERR_MSG(ERR_INPUT_INVALID_NAME, ERR_REASON_COMMON_STR_EMPTY);
         return false;
     }
     // Check lenght 
@@ -101,7 +131,7 @@ bool input_is_phone_valid(char* input_phone)
 {
     if(strlen(input_phone) == 0)
     {
-        ERR_MSG(ERR_INPUT_INVALID_PHONE_NUMBER, ERR_REASON_STR_EMPTY);
+        ERR_MSG(ERR_INPUT_INVALID_PHONE_NUMBER, ERR_REASON_COMMON_STR_EMPTY);
         return false;
     }
 
@@ -140,7 +170,7 @@ bool input_is_email_valid(char* input_email)
 
     if(strlen(input_email) == 0)
     {
-        ERR_MSG(ERR_INPUT_INVALID_EMAIL_ADDRESS, ERR_REASON_STR_EMPTY);
+        ERR_MSG(ERR_INPUT_INVALID_EMAIL_ADDRESS, ERR_REASON_COMMON_STR_EMPTY);
         return false;
     }
 
@@ -233,7 +263,7 @@ extern bool input_check_email_TLD(char* input)
     int line = 0;
     if(Tld_list == NULL)
     {
-        ERR_MSG(ERR_COMMON_COULD_NOT_LOAD_FILE, ERR_REASON_FILE_MISSING);
+        ERR_MSG(ERR_COMMON_COULD_NOT_LOAD_FILE, ERR_REASON_COMMON_FILE_MISSING);
         return false;
     }
     while(fgets(buffer, sizeof(buffer), Tld_list) != NULL)
@@ -291,12 +321,11 @@ bool input_get_contact_name(char s_name[MAX_NAME_LENGHT])
     LOG("User providing contact name.");
     printf("Please provide contact's name:\n");
     char buffer[MAX_NAME_LENGHT];
-    fgets(buffer, sizeof(buffer), stdin);
-    LOG("Got %s", buffer);
-    
+    fgets(buffer, sizeof(buffer), stdin);    
     // Remove tailing newline
     buffer[strcspn(buffer, "\n")] = '\0';
-    
+
+    LOG("Got %s", buffer);
     // Remove double spaces if present
     input_remove_double_spaces(buffer);
     if(input_is_name_valid(buffer))

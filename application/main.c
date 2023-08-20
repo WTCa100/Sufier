@@ -66,7 +66,45 @@ int main(int argc, char const *argv[])
             char tmp_name_edt[MAX_NAME_LENGHT];
             if(input_get_contact_name(tmp_name_edt))
             {
-                hash_contact_edit(tmp_name_edt);
+                if(hash_contact_edit(tmp_name_edt));
+                {
+                    printf("Contact edited succesfully!\n");
+                }
+            }
+            break;
+        case option_delete:
+            LOG("User Selection \"delete\"");
+            char tmp_name_del[MAX_NAME_LENGHT];
+            if(input_get_contact_name(tmp_name_del))
+            {
+                if(input_get_is_sure())
+                {
+                    if(hash_contact_delete(tmp_name_del))
+                    {
+                        printf("Contact has been deleted.\n");
+                    }
+
+                }
+                else
+                {
+                    LOG("Aborted by the user. No changes were made.");
+                    printf("Aborted by the user.\n");
+                }
+            }
+            break;
+        case option_erase:
+            // Give extra caution measures!
+            LOG("User Selection \"erase\" - !!!DANGER_ZONE!!!");
+            printf("Warning! Completing this action will complete wipe all the data from the hash table.");
+            printf("This cannot be un-done, and will lead to loss of data.\n");
+            if(input_get_is_sure())
+            {
+                hash_destroy();
+            }
+            else
+            {
+                LOG("Aborted by the user. No changes were made.");
+                printf("Aborted by the user.\n");
             }
             break;
         case option_exit:
@@ -230,7 +268,7 @@ bool hash_contact_delete(char* contact_delete)
         // Check hashed head
         if(node_t_delete_contact(contact_delete, &hash_table[tmp_key]))
         {
-            LOG("Deleted entry from hash table!");
+            LOG("Deleted entry %s from hash table.", contact_delete);
             return 1;
         }
 
@@ -290,15 +328,23 @@ bool hash_contact_edit(char* contact_edit)
         }
 
         /** @todo Ask if user is sure (this cannot be undone!)*/
-
-        LOG_CHANGE(contact_new_info.name, contact_new_info.phone_number, contact_new_info.email_address,
-                   contact_old->name, contact_old->phone_number, contact_old->email_address);
-        // Assing the values
-        strcpy(contact_old->name, contact_new_info.name);
-        strcpy(contact_old->phone_number, contact_new_info.phone_number);
-        strcpy(contact_old->email_address, contact_new_info.email_address);
+        if(input_get_is_sure())
+        {
+            LOG_CHANGE(contact_new_info.name, contact_new_info.phone_number, contact_new_info.email_address,
+                    contact_old->name, contact_old->phone_number, contact_old->email_address);
+            // Assing the values
+            strcpy(contact_old->name, contact_new_info.name);
+            strcpy(contact_old->phone_number, contact_new_info.phone_number);
+            strcpy(contact_old->email_address, contact_new_info.email_address);
+            return true;
+        }
+        else
+        {
+            LOG("Aborted by the user. No changes were made.");
+            printf("Aborted by the user.\n");
+            return false;
+        }
         
-        return true;
     }
     
     ERR_MSG(ERR_HASH_COULD_NOT_EDIT_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
