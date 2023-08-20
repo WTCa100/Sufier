@@ -78,4 +78,21 @@ extern char file_name[45];
     LOG_FILE_CLOSE(); \
 }
 
+/**
+ * @brief Generate a log entry that would directly point at differences that were made
+ * @param NC_N New Contact Name
+ * @param NC_P New Contact Phone
+ * @param NC_E New Contact Email
+ * @param OC_N Old Contact Name
+ * @param OC_P Old Contact Phone
+ * @param OC_E Old Contact Email
+ * 
+ */
+#define LOG_CHANGE(NC_N, NC_P, NC_E, OC_N, OC_P, OC_E) \
+{   \
+    LOG("Contact change:\n%s -> %s\n%s -> %s\n%s -> %s",\
+    OC_N, NC_N, OC_P, NC_P, OC_E, NC_E);\
+\
+}
+
 #endif // APP_UTILITIES_LOGGER_H

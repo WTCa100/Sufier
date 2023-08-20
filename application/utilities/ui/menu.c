@@ -14,9 +14,10 @@ int ui_menu_display()
     LOG("User at menu display.");
     printf("Sufier - your easy to access hash-table.\n");
     printf("1. Add contact.\n");
-    printf("2. Display/Edit contacts.\n");
+    printf("2. Display.\n");
     printf("3. Show all contacts.\n");
-    printf("4. Exit.\n");
+    printf("4. Edit contact.\n");
+    printf("5. Exit.\n");
     printf("Choose one option: ");
     fgets(buffer, sizeof(buffer), stdin);
 
@@ -40,7 +41,7 @@ int ui_menu_display()
 
 bool ui_menu_verify_input(int input)
 {
-    bool is_valid = (input == option_add || input == option_display || input == option_exit);
+    bool is_valid = (input >= option_add && input <= option_exit);
     if(is_valid)
     {
         LOG("%d is valid option", input);

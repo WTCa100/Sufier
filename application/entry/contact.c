@@ -80,7 +80,8 @@ bool contact_t_compare(Contact_t* this, Contact_t* com)
         return 0;
     }
 
-    LOG("Comparing:\n %s - %s \n %s - %s \n %s - %s", this->name, com->name, this->phone_number, com->phone_number, this->email_address, com->phone_number);
+    LOG("Comparing:\n%s - %s\n%s - %s\n%s - %s",\
+        this->name, com->name, this->phone_number, com->phone_number, this->email_address, com->email_address);
 
     return (strcmp(this->name, com->name) == 0 &&
             strcmp(this->phone_number, com->phone_number) == 0 &&

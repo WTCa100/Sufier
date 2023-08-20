@@ -21,7 +21,7 @@ bool input_get_contact_info(Contact_t* contact_new)
     char tmp_mail[MAX_EMAIL_LENGHT]  = "";
 
     LOG("Getting contact info from user.");
-    printf("To add new contact please specify: \n");
+    printf("Please specify contact's: \n");
     printf("Name: ");
     fgets(buffer, sizeof(buffer), stdin);
 

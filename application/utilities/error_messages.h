@@ -48,6 +48,7 @@
 #define ERR_HASH_COULD_NOT_ADD_CONTACT "Error. Could not add contact."
 #define ERR_HASH_COULD_NOT_DELETE_CONTACT "Error. Could not delete contact."
 #define ERR_HASH_COULD_NOT_FIND_CONTACT "Error. Could not find contact in hash table."
+#define ERR_HASH_COULD_NOT_EDIT_CONTACT "Error. Could not edit desired contact."
 // Node
 #define ERR_NODE_COULD_NOT_CREATE_NODE "Error. Could not create node."
 #define ERR_NODE_COULD_NOT_ADD_CONTACT "Error. Could not add contact."
@@ -78,6 +79,7 @@
 #define ERR_REASON_HASH_TABLE_CONTACT_ABSENT "No such contact in the hash table."
 #define ERR_REASON_HASH_INVALID_CONTACT "Contact seems to have an invalid attribute/attributes."
 #define ERR_REASON_HASH_CONTACT_DUP "Contact name duplicate conflict."
+#define ERR_REASON_HASH_CONTACT_NEW_NAME_DUP "New name would conflict with existing records."
 // Node
 #define ERR_REASON_NODE_CONTACT_NOT_PRESENT "Given contact is not present in this linked list."
 #define ERR_REASON_NODE_EMPTY "Linked list is empty."

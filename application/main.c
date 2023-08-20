@@ -17,7 +17,9 @@ Node_t* hash_table[MAX_HASH_TABLE_ENTRIES] = {NULL};
 uint16_t hash_key_calculate(char* entry);
 bool hash_contact_add(Contact_t* contact_add);
 bool hash_contact_delete(char* contact_delete);
+bool hash_contact_edit(char* contact_edit);
 void hash_contact_display(char* contact_display);
+Contact_t* hash_contact_get(char* contact_get);
 void hash_list_parse_linked(void);
 void hash_destroy(void);
 
@@ -31,7 +33,7 @@ int main(int argc, char const *argv[])
         {
             user_option = ui_menu_display();
         } while (!ui_menu_verify_input(user_option));
-        LOG("User option: %d\n", user_option);
+        LOG("User option: %d", user_option);
 
         switch (user_option)
         {
@@ -49,15 +51,24 @@ int main(int argc, char const *argv[])
             break;
         case option_display:
             LOG("User Selection \"display\"");
-            char tmp_name[MAX_NAME_LENGHT];
-            if(input_get_contact_name(tmp_name))
+            char tmp_name_dsp[MAX_NAME_LENGHT];
+            if(input_get_contact_name(tmp_name_dsp))
             {
-                hash_contact_display(tmp_name);
+                hash_contact_display(tmp_name_dsp);
             }
             break;
         case option_show_all:
             LOG("User Selection \"show all\"");
             hash_list_parse_linked();
+            break;
+        case option_edit:
+            LOG("User Selection \"edit\"");
+            char tmp_name_edt[MAX_NAME_LENGHT];
+            if(input_get_contact_name(tmp_name_edt))
+            {
+                hash_contact_edit(tmp_name_edt);
+            }
+            break;
         case option_exit:
             LOG("User Selection \"exit\"");
             printf("Exiting Sufier...\n");
@@ -138,42 +149,21 @@ bool hash_contact_add(Contact_t* contact_add)
         return 0;
     }
 
-    int tmp_key = hash_key;
-    bool was_full_loop = false;
+    // Check for duplicates
+    LOG("Checking if %s is a duplicated.", contact_add->name);
+    Contact_t* tmp_dup_check = hash_contact_get(contact_add->name);
 
-    // Look for a duplicate
-    // It's very similar to the finding function
-    while(!was_full_loop)
+    if(tmp_dup_check != NULL)
     {
-        LOG("Checking key: %d", tmp_key);
-        // Check hashed head
-        if(node_t_find_contact(contact_add->name, hash_table[tmp_key]) != NULL)
-        {
-            LOG("Contact with name %s already exists!", contact_add->name);
-            ERR_MSG(ERR_HASH_COULD_NOT_ADD_CONTACT, ERR_REASON_HASH_CONTACT_DUP);
-            return false;
-        }
-
-        // If linked list was full search for next valid linked list
-        ++tmp_key;
-
-        // Assign zero if upper boundry is reached
-        if(tmp_key == MAX_HASH_TABLE_ENTRIES)
-        {
-            tmp_key = 0;
-        }
-
-        // Break if full loop
-        if(tmp_key == hash_key)
-        {
-            was_full_loop = true;
-        }
+        LOG("Found a duplicate.");
+        ERR_MSG(ERR_HASH_COULD_NOT_ADD_CONTACT, ERR_REASON_HASH_CONTACT_DUP);
+        return false;
     }
 
     // If we are here then no duplicate was found. Reset the values.
     LOG("No duplicated contact with name %s was found. Proceeding.", contact_add->name);
-    tmp_key = hash_key;
-    was_full_loop = false;
+    int tmp_key = hash_key;
+    bool was_full_loop = false;
 
     while(!was_full_loop)
     {
@@ -263,16 +253,82 @@ bool hash_contact_delete(char* contact_delete)
     return 1;
 }
 
+bool hash_contact_edit(char* contact_edit)
+{
+    LOG("Attempting to edit contact with name %s", contact_edit);
+    LOG("Trying to locate contact.");
+    Contact_t* contact_old = hash_contact_get(contact_edit);
+    if(contact_old == NULL)
+    {
+        ERR_MSG(ERR_HASH_COULD_NOT_EDIT_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
+        return false;
+    }
+
+    printf("Old contact Values: \n");
+    contact_t_display_format(contact_old);
+    LOG("Get new values.");
+    Contact_t contact_new_info;
+    if(input_get_contact_info(&contact_new_info))
+    {
+        LOG("Attempting to change contact data.");
+        LOG("Check if new contact name can be a duplicate.");
+        Contact_t* contact_check_dup = hash_contact_get(contact_new_info.name);
+        
+        // Basically check if the new contact is not a duplicate while also not being the same name as the one being currently edited.
+        if(contact_check_dup != NULL && strcmp(contact_old->name, contact_new_info.name) != 0)
+        {
+            ERR_MSG(ERR_HASH_COULD_NOT_EDIT_CONTACT, ERR_REASON_HASH_CONTACT_NEW_NAME_DUP);
+            return false;
+        }
+        
+        // Check if values are the same
+        if(contact_t_compare(contact_old, &contact_new_info))
+        {
+            LOG("New values are the same as old ones. Nothing to change.");
+            printf("New values are the same as old ones. Nothing to change.\n");
+            return true;
+        }
+
+        /** @todo Ask if user is sure (this cannot be undone!)*/
+
+        LOG_CHANGE(contact_new_info.name, contact_new_info.phone_number, contact_new_info.email_address,
+                   contact_old->name, contact_old->phone_number, contact_old->email_address);
+        // Assing the values
+        strcpy(contact_old->name, contact_new_info.name);
+        strcpy(contact_old->phone_number, contact_new_info.phone_number);
+        strcpy(contact_old->email_address, contact_new_info.email_address);
+        
+        return true;
+    }
+    
+    ERR_MSG(ERR_HASH_COULD_NOT_EDIT_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
+    return false;
+}
+
 /// @brief Displays specified contact after finding it in hash_table
 /// @param contact_display 
 void hash_contact_display(char* contact_display)
 {
-    uint16_t hash_key = hash_key_calculate(contact_display);
+    Contact_t* tmp_contact = hash_contact_get(contact_display);
+    if(tmp_contact != NULL)
+    {
+        LOG("Displaying contact: %s", contact_display);
+        contact_t_show(tmp_contact);
+        return;
+    }
+
+    // No need for new error message as it's being displayed inside contact_t_show.
+    return;
+}
+
+Contact_t* hash_contact_get(char* contact_get)
+{
+    uint16_t hash_key = hash_key_calculate(contact_get);
 
     if(hash_key > MAX_HASH_TABLE_ENTRIES)
     {
         ERR_MSG(ERR_HASH_COULD_NOT_FIND_CONTACT, ERR_REASON_HASH_INVALID_KEY);
-        return;
+        return NULL;
     }
 
     uint16_t tmp_key = hash_key;
@@ -283,12 +339,11 @@ void hash_contact_display(char* contact_display)
     {
         LOG("Checking key: %d", tmp_key);
         // Check hashed head
-        contact_find = node_t_find_contact(contact_display, hash_table[tmp_key]);
+        contact_find = node_t_find_contact(contact_get, hash_table[tmp_key]);
         if(contact_find != NULL)
         {
             LOG("Displaying contact found at hash val %d", tmp_key);
-            contact_t_show(&contact_find->data);
-            return;
+            return &contact_find->data;
         }
 
         // If linked list was full search for next valid linked list
@@ -307,8 +362,8 @@ void hash_contact_display(char* contact_display)
         }
     }
 
-    ERR_MSG(ERR_HASH_COULD_NOT_FIND_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
-    return;
+    LOG("%s%s", ERR_HASH_COULD_NOT_FIND_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
+    return NULL;
 }
 
 /// @brief This function will parse throught hash_table heads and if head is not null it will parse linked list with this head
