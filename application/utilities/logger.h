@@ -4,9 +4,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <stdbool.h>
 
 extern FILE* log_file;
 extern char file_name[45];
+extern bool no_file_message_prompted;
 
 #define LOG_FILE_CREATE() \
 { \
@@ -17,8 +19,9 @@ extern char file_name[45];
     strcat(file_name, timestamp); \
     strcat(file_name, ".log.gz"); \
     log_file = fopen(file_name, "a");\
-    if(log_file == NULL) \
+    if(log_file == NULL && no_file_message_prompted == false) \
     { \
+        no_file_message_prompted = true;\
         printf("Could not create a log file. Will display logs during runtime.\n"); \
     } \
     else \
@@ -32,8 +35,9 @@ extern char file_name[45];
 #define LOG_FILE_OPEN() \
 {\
     log_file = fopen(file_name, "a");\
-    if(log_file == NULL) \
+    if(log_file == NULL && no_file_message_prompted == false) \
     { \
+        no_file_message_prompted = true;\
         printf("Could not create a log file. Will display logs during runtime.\n"); \
     } \
 }
