@@ -8,9 +8,8 @@
 #include "utilities/logger.h"
 #include "utilities/input/input_handle.h"
 #include "utilities/ui/menu.h"
+#include "utilities/limits.h"
 
-// later on change to 256
-#define MAX_HASH_TABLE_ENTRIES 10
 
 Node_t* hash_table[MAX_HASH_TABLE_ENTRIES] = {NULL};
 

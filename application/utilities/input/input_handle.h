@@ -3,14 +3,10 @@
 
 #include <stdbool.h>
 
-// Input
-#define MAX_INPUT_LENGHT 500
-
-// TLDs
-#define MAX_TLD_LENGHT 50
 #define TLDS_PATH "utilities/input/TLDs.txt"
 
 #include "../../entry/contact.h"
+#include "./limits.h"
 
 // Get input
 

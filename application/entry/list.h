@@ -1,11 +1,10 @@
 #ifndef APP_ENTRIES_LIST_H
 #define APP_ENTRIES_LIST_H
 
-#define MAX_LINKED_LIST_ENTRIES 10
-
 #include <stdbool.h>
 
 #include "./contact.h"
+#include "../utilities/limits.h"
 
 
 struct Node
