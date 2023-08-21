@@ -66,7 +66,7 @@ int main(int argc, char const *argv[])
             char tmp_name_edt[MAX_NAME_LENGHT];
             if(input_get_contact_name(tmp_name_edt))
             {
-                if(hash_contact_edit(tmp_name_edt));
+                if(hash_contact_edit(tmp_name_edt))
                 {
                     printf("Contact edited succesfully!\n");
                 }
@@ -408,7 +408,7 @@ Contact_t* hash_contact_get(char* contact_get)
         }
     }
 
-    LOG("%s%s", ERR_HASH_COULD_NOT_FIND_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
+    LOG("%s %s", ERR_HASH_COULD_NOT_FIND_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
     return NULL;
 }
 
