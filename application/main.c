@@ -9,7 +9,7 @@
 #include "utilities/input/input_handle.h"
 #include "utilities/ui/menu.h"
 #include "utilities/limits.h"
-
+#include "utilities/file_management/csv_handle.h"
 
 Node_t* hash_table[MAX_HASH_TABLE_ENTRIES] = {NULL};
 
@@ -17,6 +17,7 @@ uint16_t hash_key_calculate(char* entry);
 bool hash_contact_add(Contact_t* contact_add);
 bool hash_contact_delete(char* contact_delete);
 bool hash_contact_edit(char* contact_edit);
+bool hash_table_load(Contact_t* table_content);
 void hash_contact_display(char* contact_display);
 Contact_t* hash_contact_get(char* contact_get);
 void hash_list_parse_linked(void);
@@ -24,7 +25,10 @@ void hash_destroy(void);
 
 int main(int argc, char const *argv[])
 {
+    // Start log file for easier debug
     LOG_FILE_CREATE();
+
+    // Core functionality
     int user_option = 0;
     do
     {
@@ -46,7 +50,6 @@ int main(int argc, char const *argv[])
                     printf("New contact has been added!\n");
                 }
             }
-
             break;
         case option_display:
             LOG("User Selection \"display\"");

@@ -65,6 +65,8 @@
 #define ERR_INPUT_UNABLE_TO_PROCEED "Error. Cannot proceed."
 // Menu/Gui
 #define ERR_MENU_INVALID_OPTION "Error. Cannot complete request."
+// CSV
+#define ERR_CSV_COULD_NOT_SAVE_TABLE "Error. Could not save file."
 
 //=========//
 // Reasons //
@@ -73,7 +75,7 @@
 #define ERR_REASON_COMMON_MEM_ALLOC_FAIL "Memory allocation failed."
 #define ERR_REASON_COMMON_STR_EMPTY "Provided string is empty."
 #define ERR_REASON_COMMON_BAD_CONTACT_ARGUMENT "One or more parameters are invalid."
-#define ERR_REASON_COMMON_FILE_MISSING "Provided file is missing."
+#define ERR_REASON_COMMON_FILE_MISSING "No such file in directory."
 #define ERR_REASON_COMMON_INVALID_OPTION "There is no such option. Please enter a valid option."
 // Hash & Hash related errors
 #define ERR_REASON_HASH_INVALID_KEY "Hash key is invalid."
@@ -96,5 +98,6 @@
 #define ERR_REASON_INPUT_EMAIL_DOUBLE_DOT "Email address must not contain two consecutive dots \"..\"."
 #define ERR_REASON_INPUT_EMAIL_NO_TLD_SEP "Email address must have a \".\" separating it's TLD."
 #define ERR_REASON_INPUT_EMAIL_NO_TLD "Email address must have a valid TLD tag at the end."
-
+// CSV
+#define ERR_REASON_CSV_BAD_DIRECTORY "No such directory to be found."
 #endif // APP_UTILITIES_ERROR_MESSAGES
