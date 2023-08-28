@@ -339,3 +339,73 @@ bool input_get_contact_name(char s_name[MAX_NAME_LENGHT])
     return false;
 
 }
+
+bool input_get_file(char s_file[MAX_FILE_NAME_LENGHT])
+{
+    LOG("User providing path to file.");
+    printf("Please provide path to the file:\n");
+    char buffer[MAX_FILE_NAME_LENGHT];
+
+    // Change it however you want.
+    char hardcodded_path[1028] = "../tables/";
+
+    fgets(buffer, sizeof(buffer), stdin);
+    // Remove tailing newline
+    buffer[strcspn(buffer, "\n")] = '\0';
+    LOG("Got %s", buffer);
+
+    if(input_is_file_valid(buffer))
+    {
+        LOG("Got a valid path %s", buffer);
+        strcat(hardcodded_path, buffer);
+        sscanf(hardcodded_path, "%s\n", s_file);
+        return true;
+    }
+    
+    LOG("Got invalid path %s.", buffer);
+    return false;
+}
+
+bool input_is_file_valid(char* input_file)
+{
+
+    // Check if input file is . or ..
+    if(strcmp(input_file, ".") == 0 || strcmp(input_file, "..") == 0)
+    {
+        ERR_MSG(ERR_CSV_INVALID_FILE, ERR_REASON_CSV_FILE_HIDDEN_DIR);
+        return false;
+    }
+
+    // Check for any invalid character (for linux '/')
+    bool is_dot_present = false;
+    for(int i = 0; i < strlen(input_file); ++i)
+    {
+        if(input_file[i] == '/')
+        {
+            ERR_MSG(ERR_CSV_INVALID_FILE, ERR_REASON_CSV_FILE_FORBIDDEN_TAG);
+            return false;
+        }
+        if(input_file[i] == '.' && !is_dot_present)
+        {
+            is_dot_present = true;
+        }
+    }
+
+    if(!is_dot_present)
+    {
+        ERR_MSG(ERR_CSV_INVALID_FILE, ERR_REASON_CSV_FILE_NO_EXTENSION)
+        printf("File must be a .csv file\n");
+        return false;
+    }
+
+    // Check if extension is .csv
+    char* file_extension_check = strrchr(input_file, '.');
+    if(strcmp(file_extension_check, ".csv") != 0)
+    {
+        ERR_MSG(ERR_CSV_INVALID_FILE, ERR_REASON_CSV_FILE_BAD_EXTENSION);
+        printf(".csv is the only valid extension!\n");
+        return false;
+    }
+
+    return true;
+}

@@ -67,6 +67,9 @@
 #define ERR_MENU_INVALID_OPTION "Error. Cannot complete request."
 // CSV
 #define ERR_CSV_COULD_NOT_SAVE_TABLE "Error. Could not save file."
+#define ERR_CSV_INVALID_FILE "Error. Provided file nam is invalid."
+#define ERR_CSV_COULD_NOT_LOAD_TABLE "Error. Could not load table from file."
+#define ERR_CSV_COULD_NOT_PARSE_FILE "Error. Could not parse file."
 
 //=========//
 // Reasons //
@@ -100,4 +103,11 @@
 #define ERR_REASON_INPUT_EMAIL_NO_TLD "Email address must have a valid TLD tag at the end."
 // CSV
 #define ERR_REASON_CSV_BAD_DIRECTORY "No such directory to be found."
+#define ERR_REASON_CSV_TABLE_EMPTY_OR_NULL "Passed table is empty or it's head is NULL Aborting..."
+#define ERR_REASON_CSV_FILE_HIDDEN_DIR "Got '.' or '..'. Aborting..."
+#define ERR_REASON_CSV_FILE_FORBIDDEN_TAG "Found '/' in file name. Aborting..."
+#define ERR_REASON_CSV_FILE_NO_EXTENSION "No extension is present."
+#define ERR_REASON_CSV_FILE_BAD_EXTENSION "Not a valid extension."
+#define ERR_REASON_CSV_FILE_INVALID_PATH "Not a valid path."
+
 #endif // APP_UTILITIES_ERROR_MESSAGES

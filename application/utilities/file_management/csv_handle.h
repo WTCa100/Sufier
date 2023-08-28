@@ -19,16 +19,18 @@ enum csv_good_return_codes
 
 extern int max_contact_count;
 
-// Given that the program
 #define DEFAULT_TABLE_SAVE_DIR "../tables/"
 
 // Handle loading 
+
 extern bool csv_load_table(char* path, Contact_t container_contact[], int contact_container_size);
 
 // Handle saving
+
 extern bool csv_save_table(char* path, Node_t* table[MAX_HASH_TABLE_ENTRIES]);
 
 // Utilities
+
 extern int csv_is_entry_good(char* line);
 extern int csv_parse_file(char* path_to_csv);
 

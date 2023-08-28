@@ -47,6 +47,7 @@ int ui_menu_file_display()
 {
     char buffer[20];
     int choice;
+    LOG("User at file management menu.")
     printf("File management.\n");
     printf("1. Load table from file.\n");
     printf("2. Save current table to a file.\n");
@@ -73,9 +74,19 @@ int ui_menu_file_display()
 
 }
 
-bool ui_menu_verify_input(int input)
+bool ui_menu_verify_input(int input, int menu_mode)
 {
-    bool is_valid = (input >= option_add && input <= option_exit);
+    bool is_valid;
+    switch (menu_mode)
+    {
+    case menu_main:
+        is_valid = (input >= option_add && input <= option_exit);
+        break;
+    case menu_file_management:
+        is_valid = (input >= menu_file_load && input <= menu_file_back);
+        break;
+    }
+
     if(is_valid)
     {
         LOG("%d is valid option", input);
@@ -88,4 +99,5 @@ bool ui_menu_verify_input(int input)
         system("clear");
     }
     return is_valid;
+
 }

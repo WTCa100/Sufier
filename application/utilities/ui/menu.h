@@ -20,6 +20,19 @@ enum menu_options
     option_bad = -1
 };
 
+enum menu_file_options
+{
+    menu_file_load = 1,
+    menu_file_save = 2,
+    menu_file_back = 3
+};
+
+enum menu_verify_modes
+{
+    menu_main = 1,
+    menu_file_management = 2
+};
+
 // Display
 
 extern int ui_menu_display();
@@ -27,6 +40,6 @@ extern int ui_menu_file_display();
 
 // Utilities
 
-extern bool ui_menu_verify_input(int input);
+extern bool ui_menu_verify_input(int input, int menu_mode);
 
 #endif // APP_UTILITIES_UI_MENU_H

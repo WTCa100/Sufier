@@ -17,7 +17,8 @@ uint16_t hash_key_calculate(char* entry);
 bool hash_contact_add(Contact_t* contact_add);
 bool hash_contact_delete(char* contact_delete);
 bool hash_contact_edit(char* contact_edit);
-bool hash_table_load(Contact_t* table_content);
+bool hash_table_load();
+bool hash_table_save();
 void hash_contact_display(char* contact_display);
 Contact_t* hash_contact_get(char* contact_get);
 void hash_list_parse_linked(void);
@@ -28,14 +29,15 @@ int main(int argc, char const *argv[])
     // Start log file for easier debug
     LOG_FILE_CREATE();
 
-    // Core functionality
     int user_option = 0;
+    // Core functionality
     do
     {
+        int user_option_file = 0;
         do
         {
             user_option = ui_menu_display();
-        } while (!ui_menu_verify_input(user_option));
+        } while (!ui_menu_verify_input(user_option, menu_main));
         LOG("User option: %d", user_option);
 
         switch (user_option)
@@ -93,6 +95,33 @@ int main(int argc, char const *argv[])
                     printf("Aborted by the user.\n");
                 }
             }
+            break;
+        case option_file_management:
+            LOG("User Selection \"file management\"")
+            system("clear");
+            do
+            {
+                user_option_file = ui_menu_file_display();
+            } while (!ui_menu_verify_input(user_option_file, menu_file_management));
+            
+            switch (user_option_file)
+            {
+            case menu_file_load:
+                LOG("User Selection \"table load\"");
+                hash_table_load();
+                break;
+            case menu_file_save:
+                LOG("User Selection \"table save\"");
+                if(hash_table_save())
+                {
+                    printf("Table saved!\n");
+                }
+                break;
+            case menu_file_back:
+                LOG("User Selection \"back\"")
+                break;
+            }
+
             break;
         case option_erase:
             // Give extra caution measures!
@@ -351,6 +380,50 @@ bool hash_contact_edit(char* contact_edit)
     
     ERR_MSG(ERR_HASH_COULD_NOT_EDIT_CONTACT, ERR_REASON_HASH_TABLE_CONTACT_ABSENT);
     return false;
+}
+
+bool hash_table_load()
+{
+    char path_to_table[MAX_INPUT_LENGHT];
+    int contact_count = 0;        
+    if(!input_get_file(path_to_table))
+    {
+        ERR_MSG(ERR_CSV_COULD_NOT_LOAD_TABLE, ERR_REASON_CSV_FILE_INVALID_PATH)
+        return false;
+    }
+
+    contact_count = csv_parse_file(path_to_table);
+    if(contact_count == -1)
+    {
+        return false;
+    }
+
+    Contact_t contact_list[contact_count];
+    csv_load_table(path_to_table, contact_list, contact_count);
+    for(int c_id = 0; c_id < contact_count; ++c_id)
+    {
+        printf("Loading %s\n", contact_list[c_id].name);
+        if(hash_contact_add(&contact_list[c_id]))
+        {
+            printf("Successfully loaded %s.\n", contact_list[c_id].name);
+        }
+    }
+
+    LOG("Successfully extracted contacts from file %s.", path_to_table);
+    printf("Successfully extracted contacts from file %s.\n", path_to_table);
+    return true;
+}
+
+bool hash_table_save()
+{
+    char path_to_table[MAX_INPUT_LENGHT];    
+    if(!input_get_file(path_to_table))
+    {
+        ERR_MSG(ERR_CSV_COULD_NOT_LOAD_TABLE, ERR_REASON_CSV_FILE_INVALID_PATH)
+        return false;
+    }
+
+    return csv_save_table(path_to_table, hash_table);
 }
 
 /// @brief Displays specified contact after finding it in hash_table

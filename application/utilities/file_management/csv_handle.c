@@ -143,7 +143,7 @@ extern bool csv_save_table(char* path, Node_t* table[MAX_HASH_TABLE_ENTRIES])
     LOG("Attempting to save table at %s", path);
     if(table == NULL)
     {
-        LOG("Table is empty or null. Aborting...");
+        ERR_MSG(ERR_CSV_COULD_NOT_SAVE_TABLE, ERR_REASON_CSV_TABLE_EMPTY_OR_NULL);
         return false;
     }
 
@@ -164,6 +164,8 @@ extern bool csv_save_table(char* path, Node_t* table[MAX_HASH_TABLE_ENTRIES])
         }
 
         Node_t* list_parser = table[ll_id];
+        // Write header
+        fprintf(table_out, "name,phone,email\n");
         while(list_parser != NULL)
         {
             fprintf(table_out, "%s,%s,%s\n", list_parser->data.name, list_parser->data.phone_number, list_parser->data.email_address);
@@ -179,7 +181,7 @@ extern bool csv_save_table(char* path, Node_t* table[MAX_HASH_TABLE_ENTRIES])
 }
 
 /// @brief Function parses through CSV file and counts each line.
-/// @param path_to_csv - valid path to a csv file
+/// @param path_to_csv valid path to a csv file
 /// @return Line count
 int csv_parse_file(char* path_to_csv)
 {  
@@ -189,7 +191,7 @@ int csv_parse_file(char* path_to_csv)
     // Check if valid path
     if(csv == NULL)
     {
-        LOG("No such file in directory. Aborting...");
+        ERR_MSG(ERR_CSV_COULD_NOT_PARSE_FILE, ERR_REASON_COMMON_FILE_MISSING);
         return -1;
     }
 

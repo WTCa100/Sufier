@@ -13,6 +13,10 @@
 
 // Input reletad upper limits
 #define MAX_INPUT_LENGHT 500
+
+// File names
+#define MAX_FILE_NAME_LENGHT 128
+
 // TLDs
 #define MAX_TLD_LENGHT 50
 
