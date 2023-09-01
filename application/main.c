@@ -275,7 +275,9 @@ bool hash_contact_add(Contact_t* contact_add)
     return 0;
 }
 
-
+/// @brief This function will search for given contact, and delet it if found.
+/// @param contact_delete name of the contact
+/// @return true if found and deleted, false otherwise
 bool hash_contact_delete(char* contact_delete)
 {
     LOG("Attempting to delete %s", contact_delete);
@@ -322,6 +324,9 @@ bool hash_contact_delete(char* contact_delete)
     return 1;
 }
 
+/// @brief Searches for contact in the hash table and tries to change it's values to the new ones.
+/// @param contact_edit name of the contact to be edited.
+/// @return true if edited successfully, false otherwise 
 bool hash_contact_edit(char* contact_edit)
 {
     LOG("Attempting to edit contact with name %s", contact_edit);
@@ -382,6 +387,8 @@ bool hash_contact_edit(char* contact_edit)
     return false;
 }
 
+/// @brief This function will start the process of loading .csv file contents into this file memory.
+/// @return true if success, false otherwise.
 bool hash_table_load()
 {
     char path_to_table[MAX_INPUT_LENGHT];
@@ -414,6 +421,8 @@ bool hash_table_load()
     return true;
 }
 
+/// @brief This function will start the process of saving the current hash table into a safe file
+/// @return outcome of csv_save_table
 bool hash_table_save()
 {
     char path_to_table[MAX_INPUT_LENGHT];    
@@ -442,6 +451,9 @@ void hash_contact_display(char* contact_display)
     return;
 }
 
+/// @brief This function will try to get poitner to contact_t instance if present inside hash table
+/// @param contact_get name of the contact
+/// @return non-NULL pointer if success, NULL if fail.
 Contact_t* hash_contact_get(char* contact_get)
 {
     uint16_t hash_key = hash_key_calculate(contact_get);
@@ -488,7 +500,6 @@ Contact_t* hash_contact_get(char* contact_get)
 }
 
 /// @brief This function will parse throught hash_table heads and if head is not null it will parse linked list with this head
-/// @param  
 void hash_list_parse_linked(void)
 {
     LOG("Parsing Linked List.");

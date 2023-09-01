@@ -8,7 +8,7 @@
 
 /// @brief This function created additional node.
 /// After successful memory allocation, initial contact is assigned to `data` attribute.
-/// @param contact_init
+/// @param contact_init valid instance of contact
 /// @return Valid node pointer or NULL after memory allocation fail.
 Node_t* node_t_init(Contact_t* contact_init)
 {
@@ -24,12 +24,13 @@ Node_t* node_t_init(Contact_t* contact_init)
     return new_node;
 }
 
-/// @brief Parses throught the entire list and displays contat information
+/// @brief Parses throught the entire list and displays contat information. If head is empty, nothing will be displayed.
 /// @param head Initial node entry
 void node_t_parse_list(Node_t* head)
 {
     Node_t* tmp_pointer = head;
     LOG("Will parse throught list (head %p)", head);
+    printf("-= Start of List =-\n");
     while(tmp_pointer != NULL)
     {
         contact_t_show(&tmp_pointer->data);
@@ -40,14 +41,15 @@ void node_t_parse_list(Node_t* head)
         tmp_pointer = tmp_pointer->next;
     }
     printf("--== NULL ==--\n");
+    printf("-= End of List =-\n");
     LOG("Successfully parsed entire list (head at %p)", head);
     return;
 }
 
-/// @brief 
-/// @param contact_add 
-/// @param head 
-/// @return 
+/// @brief Function will add specified contact into the linked list with specified head. It will insert the contact into the first avilable spot 
+/// @param contact_add contact to be added
+/// @param head list in which contact shall be added 
+/// @return true is successful, false if any error appears.
 bool node_t_push_back(Contact_t* contact_add, Node_t* head)
 {
     LOG("Attempting to add new contact: Name: %s Phone: %s Email: %s", contact_add->name, contact_add->phone_number, contact_add->email_address);

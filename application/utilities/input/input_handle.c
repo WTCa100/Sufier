@@ -75,6 +75,8 @@ bool input_get_contact_info(Contact_t* contact_new)
 
 }
 
+ /// @brief Prompt user to press either y or n.
+ /// @return 1 if sure, 0 if not
  bool input_get_is_sure()
  {
     LOG("Checking if user is sure.");
@@ -316,6 +318,10 @@ void input_str_to_lower(char* input)
     }
 }
 
+/// @brief Function prompts user to provide single name for the later usage (i.e. Contact creation.). 
+/// After the user inputed the name, it will go through standard validation check.
+/// @param s_name where shall the name be stored
+/// @return true if provided name is false if any error appeared. 
 bool input_get_contact_name(char s_name[MAX_NAME_LENGHT])
 {
     LOG("User providing contact name.");
@@ -340,6 +346,9 @@ bool input_get_contact_name(char s_name[MAX_NAME_LENGHT])
 
 }
 
+/// @brief Function asks user to get file name. It will go through standard file check.
+/// @param s_file where shall the file name be stored.
+/// @return true if provided filename is false if any error appeared. 
 bool input_get_file(char s_file[MAX_FILE_NAME_LENGHT])
 {
     LOG("User providing path to file.");
@@ -366,6 +375,9 @@ bool input_get_file(char s_file[MAX_FILE_NAME_LENGHT])
     return false;
 }
 
+/// @brief Checks if provided name is valid. That is: does not contain more than 2 dots, forward slash and is either "." or ".."
+/// @param input_file name to check
+/// @return true is is valid, false if not
 bool input_is_file_valid(char* input_file)
 {
 

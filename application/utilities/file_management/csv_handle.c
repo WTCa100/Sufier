@@ -99,7 +99,7 @@ bool csv_load_table(char* path, Contact_t container_contact[], int contact_conta
 }
 
 /// @brief Checks if a given buffer line has any prohibited signs.
-/// @param line 
+/// @param line
 /// @return csv_enum value depending on the outcome.
 /// @note Those sings are spacebars and bigger count of commas than 2.
 int csv_is_entry_good(char* line)
@@ -182,7 +182,7 @@ extern bool csv_save_table(char* path, Node_t* table[MAX_HASH_TABLE_ENTRIES])
 
 /// @brief Function parses through CSV file and counts each line.
 /// @param path_to_csv valid path to a csv file
-/// @return Line count
+/// @return Count of valid lines.
 int csv_parse_file(char* path_to_csv)
 {  
     LOG("Parsing %s", path_to_csv);

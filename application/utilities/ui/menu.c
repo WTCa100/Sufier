@@ -7,6 +7,11 @@
 #include "../logger.h"
 #include "../error_messages.h"
 
+/// @brief Main menu display. It contains information about every possible action that the user can do
+/// regarding adding, deleting, editing contacts and manage files. If any UI is enabled this shall be the main screen that he users sees
+/// after launching this software.
+/// @return value of respected enum: menu_options
+/// @note This function also take input from the user and validates it.
 int ui_menu_display()
 {
     char buffer[20];
@@ -43,6 +48,10 @@ int ui_menu_display()
     }
 }
 
+/// @brief This is a sub menu, which shall be launched after the user wishes to enter file management options.
+/// It contains information about loading table, saving current table and going back to main menu.
+/// @return 
+/// @note This function also take input from the user and validates it.
 int ui_menu_file_display()
 {
     char buffer[20];
@@ -74,6 +83,11 @@ int ui_menu_file_display()
 
 }
 
+/// @brief This function verifies the user input from the main menu. It will check if the value provided is within range of possible options.
+/// Options differ depening on the menu mode.
+/// @param input input converted to integer
+/// @param menu_mode in which menu is the verify being called
+/// @return true if input is correct, false if not
 bool ui_menu_verify_input(int input, int menu_mode)
 {
     bool is_valid;
