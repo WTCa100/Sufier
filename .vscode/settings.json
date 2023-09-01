@@ -1,9 +1,8 @@
 {
     "files.associations": {
         "*.ejs": "html",
-        "contact.h": "c",
-        "list.h": "c",
-        "logger.h": "c",
-        "stdio.h": "c"
+        "csv_handle.h": "c",
+        "limits.h": "c",
+        "algorithm": "c"
     }
 }
